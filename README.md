@@ -11,16 +11,22 @@ $
 ## Usage
 
 ```golang
-import "github.com/lemenkov/systemd.go"
+import (
+  "github.com/lemenkov/systemd.go"
+  "log"
+  "net"
+  "net/http"
+)
 
 func main() {
   var listener net.Listener
+  var err error
 
-  sockets, err = systemd.ListenFds()
+  sockets := systemd.ListenFds()
   if sockets == nil {
-    listener, err = net.ListenUnix("unix", "/tmp/servicename.socket")
+    listener, err = net.Listen("unix", "/tmp/servicename.socket")
   } else {
-    listener, err = net.ListenFile(sockets[0])
+    listener, err = net.FileListener(sockets[0])
   }
 
   if err != nil {
